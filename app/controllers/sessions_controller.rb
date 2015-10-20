@@ -7,9 +7,10 @@ class SessionsController < ApplicationController
 	def create
 		@user = User.find_by(email: user_params[:email])
 		if @user and User.authenticate(@user.email, user_params[:password])
-			session[:user_id] = @user.user_id
-			redirect_to @user
+			session[:user_id] = @user.id
+			redirect_to :root
 		else
+			flash[:error] = "Oops, something went wrong!"
 			render "new"
 		end
 	end

@@ -5,8 +5,8 @@ class User < ActiveRecord::Base
 	has_many :subscriptions
 	has_many :channels, through: :subscriptions
 
-	validate :password_requirements
 	validates_presence_of :email, :hashed_password
+	validate :password_requirements
 
 	def password
 		@password ||= BCrypt::Password.new(hashed_password)
@@ -23,16 +23,21 @@ class User < ActiveRecord::Base
 		@user if @user && @user.password == password
 	end
 
-	private
-
+private
 	def raw_password
-		@raw_password
-	end
+    @raw_password
+  end
+  def password_requirements
+    # only run validations if raw_password is set (not nil)
+    # OR if the record hasn't been saved yet (we require a
+    # password to create a user)
+    if raw_password || new_record?
+      # validate that the raw password is at least 6 characters long
+      # and contains 1 special character (!@#$%^&*)
+      if raw_password.length < 6 || !(raw_password =~ /[!@#$%^&*]/)
+        errors.add(:password, "must be at least 6 characters long and contain at least 1 special character (!@#$%^&*).")
+      end
+    end
+  end
 
-	def password_requirements
-		if raw_password || new_record?
-			if raw_password.length < 6 || !(raw_password =~ /[!@#$%^&*]/)
-				errors.add(:password, "Password must be at least 6 characters long and contain a special character (!@#$%^&*)!")
-			end
-		end
 end

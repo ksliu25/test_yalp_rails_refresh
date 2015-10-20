@@ -8,12 +8,12 @@
 
 <% end %>
 
-<%= form_for(:session) do |f| %>
-	<%= f.label :email %>
-	<%= f.text_field :email %><br>
+<%= form_for(:session, url: sessions_path) do |f| %>
+	<%= label_tag("Email") %> <br>
+	<input type="text" name="user[email]"></input> <br>
 
-	<%= f.label :hashed_password %>
-	<%= f.text_field :hashed_password %>
+	<%= label_tag("Password") %><br>
+	<input type="password" name="user[password]"></input> <br>
 
-	<%= f.submit %>
+	<%= submit_tag("Sign in") %>
 <% end %>
