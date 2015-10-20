@@ -1,0 +1,11 @@
+<h1>Editing User</h1>
+<% if @user && @user.errors.any? %>
+
+  <ul>
+    <% @user.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+  </ul>
+
+<% end %>
+<%= render partial: "form", locals: {user: @user} %>

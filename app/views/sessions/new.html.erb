@@ -1,0 +1,19 @@
+<% if @user && @user.errors.any? %>
+
+  <ul>
+    <% @user.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+  </ul>
+
+<% end %>
+
+<%= form_for(:session) do |f| %>
+	<%= f.label :email %>
+	<%= f.text_field :email %><br>
+
+	<%= f.label :hashed_password %>
+	<%= f.text_field :hashed_password %>
+
+	<%= f.submit %>
+<% end %>
